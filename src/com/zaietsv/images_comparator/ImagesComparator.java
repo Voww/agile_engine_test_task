@@ -1,9 +1,9 @@
-package com.zaietsv.comparator;
+package com.zaietsv.images_comparator;
 
 import java.awt.image.BufferedImage;
 
 /**
- * Created by Voww on 03.11.2015.
+ * Created by Voww on 05.11.2015.
  */
 public interface ImagesComparator {
 
