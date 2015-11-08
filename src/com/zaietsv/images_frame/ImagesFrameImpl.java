@@ -93,13 +93,14 @@ public class ImagesFrameImpl extends JPanel implements ImagesFrame, ActionListen
 
                     BufferedImage image1 = reader.readImage(path1);
                     BufferedImage image2 = reader.readImage(path2);
-                    BufferedImage dstImage = new BufferedImage(image1.getWidth(), image1.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    //BufferedImage dstImage = new BufferedImage(image1.getWidth(), image1.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    BufferedImage dstImage = image2;
 
                     ImagesComparator comparator = new ImagesComparatorImpl();
                     comparator.compareImages(image1, image2, dstImage);
 
-                    writer.writeImage(dstImage, "dst_img.png");
-                    BufferedImage bufferedImage = reader.readImage("dst_img.png");
+                    writer.writeImage(dstImage, "resources/dst_img.png");
+                    BufferedImage bufferedImage = reader.readImage("resources/dst_img.png");
                     BufferedImage resized = new BufferedImage(BI_WIDTH, BI_HEIGHT, bufferedImage.getType());
 
                     Graphics2D g = resized.createGraphics();

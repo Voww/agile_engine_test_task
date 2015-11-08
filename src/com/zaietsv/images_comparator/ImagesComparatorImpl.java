@@ -13,9 +13,12 @@ public class ImagesComparatorImpl implements ImagesComparator {
 
         int fullWidth = srcImg1.getWidth();
         int fullHeight = srcImg1.getHeight();
-        if (fullWidth == 1 && fullHeight == 1) {
-            int rgb_1 = srcImg1.getRGB(0, 0);
-            int rgb_2 = srcImg2.getRGB(0, 0);
+        if (fullWidth <= 3 && fullHeight <= 3) {
+            //int rgb_1 = srcImg1.getRGB(0, 0);
+            //int rgb_2 = srcImg2.getRGB(0, 0);
+            int rgb_1 = evalImageRGB(srcImg1);
+            int rgb_2 = evalImageRGB(srcImg2);
+
             int absRgb1 = Math.abs(rgb_1);
             int absRgb2 = Math.abs(rgb_2);
             double dev;
@@ -26,9 +29,9 @@ public class ImagesComparatorImpl implements ImagesComparator {
             }
             if (dev > DEVIATION) {
                 dstImg.setRGB(0, 0, 0xFF0000);
-            } else {
+            } /*else {
                 dstImg.setRGB(0, 0, rgb_1);
-            }
+            }*/
         } else {
             BufferedImage subImg_1_0, subImg_2_0, subDstImg_0, subImg_1_1, subImg_2_1, subDstImg_1;
             int halfHeight_0, halfHeight_1, halfWidth_0, halfWidth_1;
@@ -51,8 +54,31 @@ public class ImagesComparatorImpl implements ImagesComparator {
                 subImg_2_1 = srcImg2.getSubimage(halfWidth_0, 0, halfWidth_1, fullHeight);
                 subDstImg_1 = dstImg.getSubimage(halfWidth_0, 0, halfWidth_1, fullHeight);
             }
-            compareImages(subImg_1_0, subImg_2_0, subDstImg_0);
-            compareImages(subImg_1_1, subImg_2_1, subDstImg_1);
+                compareImages(subImg_1_0, subImg_2_0, subDstImg_0);
+                compareImages(subImg_1_1, subImg_2_1, subDstImg_1);
         }
+    }
+
+    int evalImageRGB (BufferedImage bufImg) {
+        int rgb;
+        int step;
+        if (bufImg.getWidth() > bufImg.getHeight()){
+        step = bufImg.getHeight()/2;
+        } else {
+            step = bufImg.getWidth()/2;
+        }
+        long rgbX = 0;
+        long rgbY = 0;
+        int steps = 0;
+        for (int i = 0; i < bufImg.getHeight(); i++) {
+            rgbX += bufImg.getRGB(step, i);
+            steps++;
+        }
+        for (int j = 0; j < bufImg.getWidth(); j++) {
+            rgbY += bufImg.getRGB(j, step);
+            steps++;
+        }
+        rgb = (int) ((rgbX + rgbY) / steps);
+        return rgb;
     }
 }
